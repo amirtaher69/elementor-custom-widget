@@ -39,6 +39,12 @@ class ECW_Plugin {
     }
 
     private function init_widgets() {
-        // add your custom widgets here
+        add_action( 'elementor/widgets/register' ,
+        array( $this, 'register_simple_widget' ) );
+    }
+
+    public function register_simple_widget($widgets_manager) {
+        require_once ECW_PATH . 'includes/widgets/class-ecw-simple-widget.php';
+        $widgets_manager->register(new ECW_Simple_Widget());
     }
 }
