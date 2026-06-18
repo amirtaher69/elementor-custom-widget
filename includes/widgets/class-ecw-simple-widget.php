@@ -7,6 +7,8 @@
     exit; // Exit if accessed directly.
  }
 
+use Elementor\Group_Control_Typography;
+
  class ECW_Simple_Widget extends \Elementor\Widget_Base {
     public function get_name() {
         return 'ecw_simple_widget';
@@ -45,11 +47,12 @@
         );
 
         $this->add_control(
-            'title_color',
+            'description',
             [
-                'label' => 'رنگ عنوان',
-                'type' => \Elementor\Controls_Manager::COLOR,
-                'default' =>'#222'
+                'label' => 'توضیحات',
+                'type' => \Elementor\Controls_Manager::TEXTAREA,
+                'placeholder' => 'توضیحات ویجت را وارد کنید',
+                'default' => 'این توضیحات از ویجت است',
             ]
         );
 
@@ -66,6 +69,46 @@
         );
 
         $this->end_controls_section();
+
+        $this->start_controls_section(
+            'style_section',
+            [
+                'label' => 'تنظیمات ظاهری',
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
+        
+        $this->add_control(
+            'title_color',
+            [
+                'label' => 'رنگ عنوان',
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' =>'#222',
+                'selectors' => [
+                    '{{WRAPPER}} .ecw-title' => 'color: {{VALUE}}',
+                ]
+            ]
+        );
+
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name' => 'title_typography',
+                'label' => 'تایپوگرافی عنوان',
+                'selector' => '{{WRAPPER}} .ecw-title',
+            ]
+        );
+        $this->add_group_control(
+            Group_Control_Typography::get_type(),
+            [
+                'name' => 'description_typography',
+                'label' => 'تایپوگرافی توضیحات',
+                'selector' => '{{WRAPPER}} .ecw-description',
+            ]
+        );
+        
+
+        $this->end_controls_section();
     }
 
     protected function render() {
@@ -74,9 +117,12 @@
         ?>
         <div class="ecw-simple-widget">
             <img src="<?php echo esc_url($settings['image']['url']); ?>" alt="<?php echo esc_attr($settings['image']['alt']); ?>">
-            <h2 style="color: <?php echo esc_attr($settings['title_color']); ?>;">
+            <h2 class="ecw-title">
                 <?php echo esc_html($settings['title']); ?>
             </h2>
+            <p class="ecw-description">
+                <?php echo esc_html($settings['description']); ?>
+            </p>
         </div>
         <?php
     }
