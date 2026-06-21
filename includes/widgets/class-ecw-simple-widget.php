@@ -106,6 +106,28 @@ use Elementor\Group_Control_Typography;
                 'selector' => '{{WRAPPER}} .ecw-description',
             ]
         );
+
+        $this->add_responsive_control(
+            'title_margin_top',
+            [
+                'label' => 'فاصله عنوان از بالا',
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => ['px' , '%'],
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 200,
+                    ],
+                    '%' => [
+                        'min' => 0,
+                        'max' => 100,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .ecw-title' => 'margin-top: {{SIZE}}{{UNIT}}',
+                ],
+            ]
+        );
         
 
         $this->end_controls_section();
