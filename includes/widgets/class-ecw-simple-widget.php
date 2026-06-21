@@ -68,6 +68,47 @@ use Elementor\Group_Control_Typography;
             ]
         );
 
+        $this->add_control(
+            'show_button',
+            [
+                'label' => 'نمایش دکمه',
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'default' => 'yes',
+                'return_value' => 'yes',
+                'label_on' => 'بله',
+                'label_off' => 'خیر',
+            ]
+        );
+
+        $this->add_control(
+            'button_text',
+            [
+                'label' => 'متن دکمه',
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => 'مشاهده بیشتر',
+                'condition' => [
+                    'show_button' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'button_url',
+            [
+                'label' => 'لینک دکمه',
+                'type' => \Elementor\Controls_Manager::URL,
+                'options' => [ 'url', 'is_external', 'nofollow' ],
+				'default' => [
+					'url' => '',
+					'is_external' => true,
+					'nofollow' => true,
+					// 'custom_attributes' => '',
+				],
+                'condition' => [
+                    'show_button' => 'yes',
+                ],
+            ]
+        );
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -145,6 +186,17 @@ use Elementor\Group_Control_Typography;
             <p class="ecw-description">
                 <?php echo esc_html($settings['description']); ?>
             </p>
+
+            <?php if( $settings['show_button'] == 'yes' ) : ?>
+                <a 
+                    href="<?php echo esc_url($settings['button_url']['url']); ?>" 
+                    class="ecw-button" 
+                    target="<?php echo esc_attr($settings['button_url']['is_external'] ? '_blank' : '_self'); ?>" 
+                    rel="<?php echo esc_attr($settings['button_url']['nofollow'] ? 'nofollow' : ''); ?>">
+                    
+                    <?php echo esc_html($settings['button_text']); ?>
+                </a>
+            <?php endif; ?>
         </div>
         <?php
     }
